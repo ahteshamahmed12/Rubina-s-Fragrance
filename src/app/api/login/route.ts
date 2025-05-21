@@ -31,8 +31,16 @@ export async function POST(req: Request) {
     console.log('User saved');
 
     return NextResponse.json({ message: 'User registered successfully' });
-  } catch (error: any) {
-    console.error('REGISTER ERROR:', error);
-    return NextResponse.json({ message: 'Something went wrong', error: error.message }, { status: 500 });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { message: 'Something went wrong', error: error.message },
+        { status: 500 }
+      );
+    }
+    return NextResponse.json(
+      { message: 'Something went wrong', error: 'Unknown error' },
+      { status: 500 }
+    );
   }
 }
