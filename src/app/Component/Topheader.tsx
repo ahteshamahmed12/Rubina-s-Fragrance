@@ -3,11 +3,16 @@ import React from "react";
 
 const Topheader = () => {
   return (
-    <div className="w-full overflow-hidden bg-black text-white">
-      <div className="marquee whitespace-nowrap md:py-[6px]">
-        <span className="mx-4 text-2xl font-bold ">
-          RUBINA FRAGRANCE STORE ADVANCE PAYMENT 10% OFF SHOPPING UPTO 5000 SHIPPING FREE
-        </span>
+    <div className="w-full overflow-hidden bg-black text-white md:py-[6px]">
+      <div className="relative w-full h-10"> 
+        <div
+          className="absolute whitespace-nowrap animate-marquee top-0 left-0"
+          style={{ willChange: "transform" }}
+        >
+          <span className="text-2xl font-bold text-white">
+            RUBINA FRAGRANCE STORE, YOUR DESTINATION FOR PREMIUM FRAGRANCE AUTHENTIC, CURATED, AND UNFORGETTABLE .  SHOP WITH CONFIDENT.
+          </span>
+        </div>
       </div>
 
       <style jsx>{`
@@ -20,9 +25,8 @@ const Topheader = () => {
           }
         }
 
-        .marquee {
-          display: inline-block;
-          animation: marquee 14s linear infinite;
+        .animate-marquee {
+          animation: marquee 19s linear infinite;
         }
       `}</style>
     </div>

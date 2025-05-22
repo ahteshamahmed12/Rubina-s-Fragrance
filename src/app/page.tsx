@@ -1,12 +1,10 @@
-"use client"
+"use client";
 import Loader from "./Component/Loader";
-import Topheader from "./Component/Topheader";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
-  
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000);
@@ -15,29 +13,19 @@ export default function Home() {
 
   return (
     <>
-      
-      
-
-
-
       {loading ? (
         <Loader />
       ) : (
-        <main>
-          <Topheader />
+        <main className="mt-2">
+          <Image
+            src="/image.png"
+            alt="image"
+            width={2000}
+            height={500}
+            className="w-auto h-auto"
+          />
         </main>
       )}
-
-<main className="mt-3">
-  <Image
-    src="/image.png"
-    alt="image"
-    width={2000}
-    height={500}   
-    className="w-auto h-auto"
-  />
-</main>
-
     </>
   );
 }

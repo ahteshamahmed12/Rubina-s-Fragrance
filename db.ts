@@ -1,13 +1,21 @@
 import mongoose from "mongoose";
 
-const Mongodb_uri = process.env.MongoDB_URI!;
-if (!Mongodb_uri) {
-  throw new Error("please first give a mongodb string");
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  throw new Error("Please provide a MongoDB URI in the environment variables.");
 }
 
-let cached = global.mongoose;
+interface MongooseCache {
+  conn: mongoose.Connection | null;
+  promise: Promise<mongoose.Connection> | null;
+}
+
+// @ts-ignore
+let cached: MongooseCache = global.mongoose;
 
 if (!cached) {
+  // @ts-ignore
   cached = global.mongoose = { conn: null, promise: null };
 }
 
@@ -18,17 +26,16 @@ export default async function connectToDatabase() {
 
   if (!cached.promise) {
     const opts = {
-      bufferCommands: true,  // note: correct spelling is bufferCommands, not bufferCommand
+      bufferCommands: true,
       maxPoolSize: 10,
-      // You can add useNewUrlParser and useUnifiedTopology if you want, but mongoose 6+ has them true by default
     };
 
-    cached.promise = mongoose.connect(Mongodb_uri, opts).then(() => mongoose.connection);
+    cached.promise = mongoose.connect(MONGODB_URI as string, opts).then((mongooseInstance) => mongooseInstance.connection);
   }
 
   try {
     cached.conn = await cached.promise;
-    console.log("Database connected");
+    console.log("MongoDB connected");
   } catch (error) {
     cached.promise = null;
     console.error("MongoDB connection error:", error);

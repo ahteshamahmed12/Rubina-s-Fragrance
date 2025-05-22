@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
+import Topheader from "./Component/Topheader";
+import Header from "./Component/Header";
+import Headers from "./Component/Headers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,7 +18,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   
   title: "Rubina's Fragrance",
-  description:"Shop high-quality, luxurious perfumes at Rubina's Fragrance. Discover your signature scent today!",
+  description:"Your destination for premium fragrances authentic, curated and unforgettable .Shop with confidence.Small extraordinary.!",
   keywords: ["perfume", "fragrance", "Rubina", "buy perfume online", "luxury scent"],
 
    icons: {
@@ -49,6 +51,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Topheader/>
+        <Headers/>
+        <Header/>
         {children}
       </body>
     </html>

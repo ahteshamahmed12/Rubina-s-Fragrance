@@ -5,32 +5,21 @@ import bcrypt from 'bcryptjs';
 
 export async function POST(req: Request) {
   try {
-    console.log('Connecting to DB...');
     await connectToDatabase();
-    console.log('Connected to DB');
 
-    const { userName, email, password } = await req.json();
-    console.log('Request Body:', { userName, email });
+    const { email, password } = await req.json();
 
-    // Check if user exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      console.log('User already exists');
-      return NextResponse.json({ message: 'User already exists' }, { status: 400 });
+    const user = await User.findOne({ email });
+    if (!user) {
+      return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return NextResponse.json({ message: 'Invalid credentials' }, { status: 401 });
+    }
 
-    const newUser = new User({
-      userName,
-      email,
-      password: hashedPassword,
-    });
-
-    await newUser.save();
-    console.log('User saved');
-
-    return NextResponse.json({ message: 'User registered successfully' });
+    return NextResponse.json({ message: 'Login successful', user });
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json(
@@ -38,6 +27,7 @@ export async function POST(req: Request) {
         { status: 500 }
       );
     }
+
     return NextResponse.json(
       { message: 'Something went wrong', error: 'Unknown error' },
       { status: 500 }
